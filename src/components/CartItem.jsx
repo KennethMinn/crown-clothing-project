@@ -1,7 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const CartItem = ({ cartItem }) => {
   const { name, price, imageUrl, quantity } = cartItem;
+
   return (
     <div className="cart-item-container">
       <img src={imageUrl} alt={`${name}`} />

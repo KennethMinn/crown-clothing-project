@@ -1,14 +1,15 @@
-import React, { useContext } from "react";
-import { CartContext } from "../contexts/CartContext";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCartItems, selectCartTotal } from '../store/cart/cart-selector';
+import {
+  addItemToCart,
+  removeItemFromCart,
+  removeItemWithBtnHandler,
+} from '../store/cart/cart-action';
 
 const CheckedItems = () => {
-  const {
-    cartItems,
-    addItemToCart,
-    removeItemFromCart,
-    removeItemWithBtnHandler,
-    cartTotal,
-  } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal);
+  const dispatch = useDispatch();
 
   return (
     <div className="checkout-container">
@@ -30,10 +31,12 @@ const CheckedItems = () => {
         </div>
       </div>
 
-      {cartItems.map((cartItem) => {
+      {cartItems.map(cartItem => {
         const { id, name, imageUrl, quantity, price } = cartItem;
-        const decreaseHandler = () => removeItemFromCart(cartItem);
-        const increaseHandler = () => addItemToCart(cartItem);
+        const decreaseHandler = () =>
+          dispatch(removeItemFromCart(cartItems, cartItem));
+        const increaseHandler = () =>
+          dispatch(addItemToCart(cartItems, cartItem));
         return (
           <div key={id} className="checkout-item-container">
             <div className=" image-container">
@@ -49,9 +52,11 @@ const CheckedItems = () => {
                 &#10095;
               </div>
             </span>
-            <span className="price">{price}</span>
+            <span className="price">${price}</span>
             <span
-              onClick={() => removeItemWithBtnHandler(cartItem)}
+              onClick={() =>
+                dispatch(removeItemWithBtnHandler(cartItems, cartItem))
+              }
               className="remove-button"
             >
               &#10005;

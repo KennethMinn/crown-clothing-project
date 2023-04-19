@@ -30,24 +30,23 @@ const removeCartItems = (cartItems, productsToRemove) => {
   );
 };
 
-const removeItemBtn = (cartItems, productsToRemove) =>
+export const removeItemBtn = (cartItems, productsToRemove) =>
   cartItems.filter(cartItem => cartItem.id !== productsToRemove.id);
 
-const setIsCartOpen = bool => {
-  dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
-};
+export const setIsCartOpen = bool =>
+  createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool);
 
-const addItemToCart = productsToAdd => {
+export const addItemToCart = (cartItems, productsToAdd) => {
   const newCartITems = renderCartItems(cartItems, productsToAdd);
-  updateCartItemsReducer(newCartITems);
+  return createAction(CART_ACTION_TYPES.SET_CART_ITEM, newCartITems);
 };
 
-const removeItemFromCart = productsToRemove => {
+export const removeItemFromCart = (cartItems, productsToRemove) => {
   const newCartITems = removeCartItems(cartItems, productsToRemove);
-  updateCartItemsReducer(newCartITems);
+  return createAction(CART_ACTION_TYPES.SET_CART_ITEM, newCartITems);
 };
 
-const removeItemWithBtnHandler = productsToRemove => {
+export const removeItemWithBtnHandler = (cartItems, productsToRemove) => {
   const newCartITems = removeItemBtn(cartItems, productsToRemove);
-  updateCartItemsReducer(newCartITems);
+  return createAction(CART_ACTION_TYPES.SET_CART_ITEM, newCartITems);
 };
