@@ -26,7 +26,7 @@
       transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
     }
 
-    & .body{
+    & .body {
       opacity: 0.9;
     }
   }
@@ -143,7 +143,7 @@ $main-color: black;
     }
   }
 
-  input[type="password"] {
+  input[type='password'] {
     letter-spacing: 0.3em;
   }
 
@@ -184,7 +184,7 @@ $main-color: black;
   background-color: black;
   color: white;
   text-transform: uppercase;
-  font-family: "Open Sans Condensed";
+  font-family: 'Open Sans Condensed';
   font-weight: bolder;
   border: none;
   cursor: pointer;
@@ -462,12 +462,12 @@ $main-color: black;
 }
 
 .my-body {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 20px 40px;
   font-weight: bold;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Open+Sans:wght@300&family=PT+Serif:wght@400;700&display=swap");
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Open+Sans:wght@300&family=PT+Serif:wght@400;700&display=swap');
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
