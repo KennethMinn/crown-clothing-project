@@ -1,9 +1,11 @@
 import { compose, createStore, applyMiddleware } from 'redux';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import { rootReducer } from './root-reducer';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from './root-saga';
 
 const loggerMiddleware = store => next => action => {
   if (!action.type) return next(action);
@@ -22,12 +24,16 @@ const persistConfig = {
   blacklist: ['user'],
 };
 
+const sagaMiddleWare = createSagaMiddleware();
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middleware = [loggerMiddleware, thunk];
+const middleware = [loggerMiddleware, sagaMiddleWare];
 
 const composeEnhancers = compose(applyMiddleware(...middleware));
 
 export const store = createStore(persistedReducer, undefined, composeEnhancers);
+
+sagaMiddleWare.run(rootSaga);
 
 export const persistor = persistStore(store);
