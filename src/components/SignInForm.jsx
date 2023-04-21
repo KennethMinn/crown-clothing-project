@@ -1,53 +1,53 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
-} from "../utils/firebase";
-import FormInput from "./FormInput";
-import Button from "./Button";
+} from '../utils/firebase';
+import FormInput from './FormInput';
+import Button from './Button';
+import { useDispatch } from 'react-redux';
+import { googleSignInStart, emailSignInStart } from '../store/user/user-action';
 
 const defaultFormFields = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+  const dispatch = useDispatch();
 
   const loginWithGoogle = async () => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
   };
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
   // console.log(formFields);
 
-  const handlerSubmit = async (e) => {
+  const handlerSubmit = async e => {
     e.preventDefault();
 
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      dispatch(emailSignInStart(email, password));
       resetFormField();
     } catch (error) {
       switch (error.code) {
-        case "auth/wrong-password":
-          alert("incorrect password");
+        case 'auth/wrong-password':
+          alert('incorrect password');
           resetFormField();
           break;
 
-        case "auth/user-not-found":
-          alert("no user associated with this email");
+        case 'auth/user-not-found':
+          alert('no user associated with this email');
           resetFormField();
           break;
 
@@ -67,7 +67,7 @@ const SignInForm = () => {
       <span>Sign in with your email and password</span>
       <form onSubmit={handlerSubmit}>
         <FormInput
-          label={"Email"}
+          label={'Email'}
           type="email"
           required
           name="email"
@@ -76,7 +76,7 @@ const SignInForm = () => {
         />
 
         <FormInput
-          label={"Password"}
+          label={'Password'}
           type="password"
           required
           name="password"
@@ -85,7 +85,7 @@ const SignInForm = () => {
         />
         <div className=" d-flex justify-content-center gap-3">
           <Button type="submit">sign in</Button>
-          <Button type="button" buttonType={"google"} onClick={loginWithGoogle}>
+          <Button type="button" buttonType={'google'} onClick={loginWithGoogle}>
             Sign in with google
           </Button>
         </div>

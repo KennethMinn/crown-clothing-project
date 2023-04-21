@@ -1,49 +1,47 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
-} from "../utils/firebase";
+} from '../utils/firebase';
 
-import FormInput from "./FormInput";
-import Button from "./Button";
+import FormInput from './FormInput';
+import Button from './Button';
+import { useDispatch } from 'react-redux';
+import { signUpStart } from '../store/user/user-action';
 
 const defaultFormFields = {
-  displayName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
+  displayName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
 };
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+  const dispatch = useDispatch();
 
   const resetFormField = () => {
     setFormFields(defaultFormFields);
   };
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
-  // console.log(formFields);
 
-  const handlerSubmit = async (e) => {
+  const handlerSubmit = async e => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("passwords r not match");
+      alert('passwords r not match');
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email, password, displayName));
       resetFormField();
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("cannot create email, already in use");
+      if (error.code === 'auth/email-already-in-use') {
+        alert('cannot create email, already in use');
         resetFormField();
       }
       console.error(error.message);
@@ -56,7 +54,7 @@ const SignUpForm = () => {
       <span>Sign up with your email and password</span>
       <form onSubmit={handlerSubmit}>
         <FormInput
-          label={"Username"}
+          label={'Username'}
           type="text"
           required
           name="displayName"
@@ -65,7 +63,7 @@ const SignUpForm = () => {
         />
 
         <FormInput
-          label={"Email"}
+          label={'Email'}
           type="email"
           required
           name="email"
@@ -74,7 +72,7 @@ const SignUpForm = () => {
         />
 
         <FormInput
-          label={"Password"}
+          label={'Password'}
           type="password"
           required
           name="password"
@@ -83,7 +81,7 @@ const SignUpForm = () => {
         />
 
         <FormInput
-          label={"Confirm Password"}
+          label={'Confirm Password'}
           type="password"
           required
           name="confirmPassword"
