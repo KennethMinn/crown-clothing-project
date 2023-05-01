@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 // import { ReactComponent as CrownLogo } from "../assets/crown.svg";
 import myLogo from '../assets/crown.svg';
 import { signOutStart } from '../store/user/user-action';
@@ -7,6 +7,7 @@ import CardDropdown from '../components/CartDropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser } from '../store/user/user-selector';
 import { selectIsCartOpen } from '../store/cart/cart-selector';
+import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
@@ -14,6 +15,8 @@ const Navigation = () => {
   const dispatch = useDispatch();
 
   const signOutUser = () => dispatch(signOutStart());
+
+  const location = useLocation();
 
   return (
     <>
@@ -38,7 +41,11 @@ const Navigation = () => {
         </div>
         {isCartOpen && <CardDropdown />}
       </div>
-      <Outlet />
+      <SwitchTransition>
+        <CSSTransition timeout={500} classNames="fade" key={location.pathname}>
+          <Outlet />
+        </CSSTransition>
+      </SwitchTransition>
     </>
   );
 };
